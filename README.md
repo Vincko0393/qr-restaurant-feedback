@@ -7,6 +7,10 @@ Guests scan a QR code on the table, rate their visit on their phone in about 20 
 
 > Originally built for **Cafe Central Linz** (Austria) — bilingual German / English out of the box.
 
+<p align="center">
+  <img src="docs/screenshot-form.webp" alt="Mobile feedback form with star ratings and the thank-you screen" width="640">
+</p>
+
 ---
 
 ## Why this exists
@@ -89,6 +93,11 @@ All charts are plain Google Sheets charts on top of the review data. Some useful
 
 Because new reviews are just new rows, every chart stays up to date without any extra work.
 
+<p align="center">
+  <img src="docs/screenshot-dashboard.webp" alt="Example Google Sheets dashboard built from the review data (sample data)" width="860">
+  <br><sub>Example dashboard with illustrative sample data, no real guest reviews.</sub>
+</p>
+
 ---
 
 ## 🛠️ Tech stack
@@ -106,6 +115,7 @@ qr-restaurant-feedback/
 │   ├── Code.gs          # Backend: scoring, tagging, sheet writes, e-mails
 │   ├── Index.html       # Mobile feedback page (DE/EN)
 │   └── appsscript.json  # Apps Script manifest (web app settings)
+├── docs/                # Screenshots
 └── README.md
 ```
 
