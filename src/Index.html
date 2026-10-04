@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cafe Central Linz - Feedback</title>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --accent-color: #d4af37; /* Matte Gold */
+      --text-color: #f5f5f5;
+      --text-muted: #a0a0a0;
+      --input-bg: #2a2a2a;
+      --border-color: #333333;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px 15px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      padding: 28px 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      color: var(--accent-color);
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .header p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .lang-switch {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .lang-btn {
+      background: none;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background-color: var(--accent-color);
+      color: #000;
+      border-color: var(--accent-color);
+    }
+
+    .rating-group {
+      margin-bottom: 20px;
+    }
+
+    .rating-label {
+      font-size: 14px;
+      margin-bottom: 8px;
+      display: block;
+      color: var(--text-color);
+    }
+
+    .stars {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .stars input {
+      display: none;
+    }
+
+    .stars label {
+      font-size: 28px;
+      color: #444;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .stars input:checked ~ label,
+    .stars label:hover,
+    .stars label:hover ~ label {
+      color: var(--accent-color);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      background-color: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-color);
+      padding: 12px;
+      font-size: 14px;
+      resize: vertical;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: var(--accent-color);
+    }
+
+    .submit-btn {
+      width: 100%;
+      background-color: var(--accent-color);
+      color: #000;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      opacity: 0.9;
+    }
+
+    .submit-btn:disabled {
+      background-color: #555;
+      cursor: not-allowed;
+    }
+
+    #successMessage {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    #successMessage h2 {
+      color: var(--accent-color);
+      margin-bottom: 10px;
+    }
+
+    #successMessage p {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="setLanguage('DE', this)">DE</button>
+      <button class="lang-btn" onclick="setLanguage('EN', this)">EN</button>
+    </div>
+
+    <div id="formContent">
+      <div class="header">
+        <h1>Cafe Central Linz</h1>
+        <p id="subTitle">Ihre Meinung ist uns wichtig / Your feedback matters</p>
+      </div>
+
+      <form id="feedbackForm" onsubmit="handleFormSubmit(event)">
+
+        <!-- Service -->
+        <div class="rating-group">
+          <span class="rating-label" id="labelService">Service / Service</span>
+          <div class="stars">
+            <input type="radio" id="s5" name="service" value="5" required><label for="s5">★</label>
+            <input type="radio" id="s4" name="service" value="4"><label for="s4">★</label>
+            <input type="radio" id="s3" name="service" value="3"><label for="s3">★</label>
+            <input type="radio" id="s2" name="service" value="2"><label for="s2">★</label>
+            <input type="radio" id="s1" name="service" value="1"><label for="s1">★</label>
+          </div>
+        </div>
+
+        <!-- Food -->
+        <div class="rating-group">
+          <span class="rating-label" id="labelFood">Speisen / Food</span>
+          <div class="stars">
+            <input type="radio" id="f5" name="food" value="5" required><label for="f5">★</label>
+            <input type="radio" id="f4" name="food" value="4"><label for="f4">★</label>
+            <input type="radio" id="f3" name="food" value="3"><label for="f3">★</label>
+            <input type="radio" id="f2" name="food" value="2"><label for="f2">★</label>
+            <input type="radio" id="f1" name="food" value="1"><label for="f1">★</label>
+          </div>
+        </div>
+
+        <!-- Drinks -->
+        <div class="rating-group">
+          <span class="rating-label" id="labelDrinks">Getränke / Drinks</span>
+          <div class="stars">
+            <input type="radio" id="d5" name="drinks" value="5" required><label for="d5">★</label>
+            <input type="radio" id="d4" name="drinks" value="4"><label for="d4">★</label>
+            <input type="radio" id="d3" name="drinks" value="3"><label for="d3">★</label>
+            <input type="radio" id="d2" name="drinks" value="2"><label for="d2">★</label>
+            <input type="radio" id="d1" name="drinks" value="1"><label for="d1">★</label>
+          </div>
+        </div>
+
+        <!-- Atmosphere -->
+        <div class="rating-group">
+          <span class="rating-label" id="labelAtmosphere">Atmosphäre / Atmosphere</span>
+          <div class="stars">
+            <input type="radio" id="a5" name="atmosphere" value="5" required><label for="a5">★</label>
+            <input type="radio" id="a4" name="atmosphere" value="4"><label for="a4">★</label>
+            <input type="radio" id="a3" name="atmosphere" value="3"><label for="a3">★</label>
+            <input type="radio" id="a2" name="atmosphere" value="2"><label for="a2">★</label>
+            <input type="radio" id="a1" name="atmosphere" value="1"><label for="a1">★</label>
+          </div>
+        </div>
+
+        <!-- Comment -->
+        <div class="form-group">
+          <textarea id="comment" placeholder="Anmerkungen oder Feedback... / Comments or feedback..."></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" id="btnSubmit">Absenden / Submit</button>
+      </form>
+    </div>
+
+    <!-- Success Screen -->
+    <div id="successMessage">
+      <h2 id="successTitle">Vielen Dank!</h2>
+      <p id="successText">Ihr Feedback wurde erfolgreich gesendet.</p>
+    </div>
+  </div>
+
+  <script>
+    let currentLang = 'DE';
+
+    const translations = {
+      DE: {
+        subTitle: "Ihre Meinung ist uns wichtig",
+        labelService: "Service",
+        labelFood: "Speisen",
+        labelDrinks: "Getränke",
+        labelAtmosphere: "Atmosphäre",
+        commentPlaceholder: "Anmerkungen oder Feedback...",
+        btnSubmit: "Absenden",
+        btnSending: "Wird gesendet...",
+        successTitle: "Vielen Dank!",
+        successText: "Ihr Feedback wurde erfolgreich gesendet."
+      },
+      EN: {
+        subTitle: "Your feedback matters to us",
+        labelService: "Service",
+        labelFood: "Food",
+        labelDrinks: "Drinks",
+        labelAtmosphere: "Atmosphere",
+        commentPlaceholder: "Comments or feedback...",
+        btnSubmit: "Submit",
+        btnSending: "Submitting...",
+        successTitle: "Thank you!",
+        successText: "Your feedback has been successfully submitted."
+      }
+    };
+
+    function setLanguage(lang, button) {
+      currentLang = lang;
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+
+      const t = translations[lang];
+      document.getElementById('subTitle').innerText = t.subTitle;
+      document.getElementById('labelService').innerText = t.labelService;
+      document.getElementById('labelFood').innerText = t.labelFood;
+      document.getElementById('labelDrinks').innerText = t.labelDrinks;
+      document.getElementById('labelAtmosphere').innerText = t.labelAtmosphere;
+      document.getElementById('comment').placeholder = t.commentPlaceholder;
+      document.getElementById('btnSubmit').innerText = t.btnSubmit;
+      document.getElementById('successTitle').innerText = t.successTitle;
+      document.getElementById('successText').innerText = t.successText;
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('btnSubmit');
+      btn.disabled = true;
+      btn.innerText = translations[currentLang].btnSending;
+
+      const ratings = {
+        service: document.querySelector('input[name="service"]:checked')?.value || "",
+        food: document.querySelector('input[name="food"]:checked')?.value || "",
+        drinks: document.querySelector('input[name="drinks"]:checked')?.value || "",
+        atmosphere: document.querySelector('input[name="atmosphere"]:checked')?.value || ""
+      };
+
+      const comment = document.getElementById('comment').value;
+
+      // Photo upload is supported by the backend; the form currently sends none (null)
+      google.script.run
+        .withSuccessHandler(onSuccess)
+        .withFailureHandler(onFailure)
+        .submitDetailedReview(ratings, comment, null, currentLang);
+    }
+
+    function onSuccess() {
+      document.getElementById('formContent').style.display = 'none';
+      document.getElementById('successMessage').style.display = 'block';
+    }
+
+    function onFailure(err) {
+      alert("Fehler beim Senden / Error submitting: " + err.message);
+      const btn = document.getElementById('btnSubmit');
+      btn.disabled = false;
+      btn.innerText = translations[currentLang].btnSubmit;
+    }
+  </script>
+</body>
+</html>
